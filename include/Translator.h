@@ -206,6 +206,18 @@ class Translator {
 
         /**
           *
+          * @brief Construye, dado un traductor A -> B y otro B -> C, la 
+          *         composición de ambos, i.e., un traductor A -> C.
+          * @param first instacia de Translator que representa al traductor A -> B
+          * @param second instacia de Translator que representa al traductor B -> C
+          * @return Un traductor A -> C
+          *
+          */
+
+        static Translator compose(const Translator &first, const Translator &second);
+
+        /**
+          *
           * @brief Añade una palabra al traductor
           * @param word instancia de la clase Word a añadir
           *

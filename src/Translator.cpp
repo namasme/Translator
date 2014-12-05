@@ -47,6 +47,40 @@ Translator Translator::reverse(const Translator &direct){
 
     return Translator(reverse_trans);
 
+};
+
+
+Translator Translator::compose(const Translator &first, const Translator &second){
+
+    multimap <string, string> fst_dict = first.dictionary, snd_dict = second.dictionary;
+    multimap <string, string>::iterator fst_it = fst_dict.begin(),
+        fst_end = fst_dict.end(), snd_it;
+    pair <multimap <string, string>::iterator, multimap<string, string>::iterator> key_range;
+    string origin, mid, trans;
+    pair <string, string> curr_entry;
+
+    multimap <string, string> compose_trans;
+
+    for(; fst_it != fst_end; ++fst_it){
+
+        origin = fst_it->first;
+        mid = fst_it->second;
+        curr_entry = pair <string, string> (origin, "");
+
+        key_range = snd_dict.equal_range(mid);
+
+        for(snd_it = key_range.first; snd_it != key_range.second; ++snd_it){
+
+            curr_entry.second = snd_it->second;
+
+            compose_trans.insert(curr_entry);
+
+        }
+
+    }
+
+    return Translator(compose_trans);
+
 }
 
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include <Translator.h>
 #include <Word.h>
@@ -6,14 +7,17 @@
 using namespace std;
 
 
-int main(){
+int main(int argc, char* argv[]){
     
-    Translator direct;
+    ifstream first_input(argv[1]), second_input(argv[2]);
 
-    cin >> direct;
+    Translator fst, snd;
 
-    Translator reverse = Translator::reverse(direct);
+    first_input >> fst;
+    second_input >> snd;
 
-    cout << reverse;
+    Translator compose = Translator::compose(fst, snd);
+
+    cout << compose;
 
 }
