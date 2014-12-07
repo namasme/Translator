@@ -4,6 +4,16 @@
 #include <Word.h>
 
 
+Word::Word(){
+
+    set <string> trans;
+
+    this->origin = "";
+    this->translations = trans; 
+
+}
+
+
 Word::Word(string origin, set <string> translations){
 
     this->origin = origin;

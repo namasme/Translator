@@ -54,32 +54,101 @@ Translator Translator::compose(const Translator &first, const Translator &second
 
     multimap <string, string> fst_dict = first.dictionary, snd_dict = second.dictionary;
     multimap <string, string>::iterator fst_it = fst_dict.begin(),
-        fst_end = fst_dict.end(), snd_it;
+        fst_end = fst_dict.end(), snd_it, stop;
     pair <multimap <string, string>::iterator, multimap<string, string>::iterator> key_range;
-    string origin, mid, trans;
-    pair <string, string> curr_entry;
+    string origin, mid;
 
-    multimap <string, string> compose_trans;
+    set <string> curr_translations;
+    Word curr_entry;
 
-    for(; fst_it != fst_end; ++fst_it){
+    Translator composition;
+
+    while(fst_it != fst_end){
 
         origin = fst_it->first;
-        mid = fst_it->second;
-        curr_entry = pair <string, string> (origin, "");
+        stop = fst_dict.upper_bound(origin);
+        curr_translations.clear();  // empty the translations for this key
 
-        key_range = snd_dict.equal_range(mid);
+        for(; fst_it != stop; ++fst_it){
 
-        for(snd_it = key_range.first; snd_it != key_range.second; ++snd_it){
+            mid = fst_it->second;
 
-            curr_entry.second = snd_it->second;
+            key_range = snd_dict.equal_range(mid);
 
-            compose_trans.insert(curr_entry);
+            for(snd_it = key_range.first; snd_it != key_range.second; ++snd_it){
+
+                curr_translations.insert(snd_it->second);
+
+            }
 
         }
 
+        curr_entry = Word(origin, curr_translations);
+        composition.addEntry(curr_entry);
+
     }
 
-    return Translator(compose_trans);
+    return composition;
+
+}
+
+
+Translator Translator::intersection(const Translator &first, const Translator &second){
+
+    multimap <string, string> fst_dict = first.dictionary, snd_dict = second.dictionary;
+    multimap <string, string>::iterator fst_it = fst_dict.begin(),
+        fst_end = fst_dict.end(), snd_it, snd_curr_key, snd_end = snd_dict.end(),
+        fst_stop, snd_stop;
+    pair <multimap <string, string>::iterator, multimap<string, string>::iterator> key_range;
+    string origin, mid;
+
+    set <string> curr_translations;
+    Word curr_entry;
+
+    Translator intersection;
+
+    while(fst_it != fst_end){
+
+        origin = fst_it->first;
+
+        snd_curr_key = snd_dict.find(origin);
+        fst_stop = fst_dict.upper_bound(origin);
+
+        if(snd_curr_key != snd_end){  // the key is on the second translator too
+
+            curr_translations.clear();  // empty the translations for this key
+
+            snd_stop = snd_dict.upper_bound(origin);
+
+            for(; fst_it != fst_stop; ++fst_it){  // iterate over the A->B translations
+
+                for(snd_it = snd_curr_key; snd_it != snd_stop; ++snd_it){  // iterate over the C->B
+
+                    if(fst_it->second == snd_it->second){  // translations match
+
+                        curr_translations.insert(fst_it->second);
+
+                    }
+
+                }
+
+            }
+
+            if(not curr_translations.empty()){
+
+                curr_entry = Word(origin, curr_translations);
+
+                intersection.addEntry(curr_entry);
+
+            }
+
+        }
+
+        fst_it = fst_stop;
+        
+    }
+
+    return intersection;
 
 }
 
@@ -97,6 +166,19 @@ void Translator::addEntry(const Word &word){
         this->dictionary.insert(curr_entry);
 
     }
+
+}
+
+bool Translator::contains(string origin) const {
+
+    return this->dictionary.count(origin) > 0;
+
+}
+
+
+bool Translator::empty() const {
+
+    return this->dictionary.empty();
 
 }
 
@@ -149,15 +231,15 @@ ostream& operator<<(ostream &os, const Translator &translator){
         string key = (*it).first;
         curr_stop = dict.upper_bound(key);
 
-        cout << key << ";";
+        os << key << ";";
 
         for(; it != curr_stop; ++it){
 
-            cout << (*it).second << ";";
+            os << (*it).second << ";";
 
         }
 
-        cout << endl;
+        os << endl;
 
     }
 
@@ -191,5 +273,19 @@ Word Translator::buildWord(string entry){
     Word word(origin, translations);
 
     return word;
+
+}
+
+
+void GetTraductorInverso(const Translator &direct, Translator &reverse){
+
+    reverse = Translator::reverse(direct);
+
+}
+
+
+void ImprimeTraductor(const Translator &translator, ostream &os){
+
+    os << translator;
 
 }

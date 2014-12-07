@@ -35,15 +35,6 @@ class Translator {
 
         multimap <string, string> dictionary;
 
-        /**
-          *
-          * @brief Comprueba si el traductor está vacío
-          * @return true si está vacío, falso si no
-          *
-          */
-
-        bool empty();
-
     public:
 
       /**
@@ -90,7 +81,7 @@ class Translator {
                     return tmp;
                 }
 
-                const pair <string, string> operator*() const {
+                pair <string, string> operator*() const {
                     return *(this->it);
                 }
 
@@ -186,7 +177,7 @@ class Translator {
         /**
           *
           * @brief Constructor de la clase
-          * @param dictionary instancia de una lista ordenada que contiene 
+          * @param dictionary instancia de un multimapa que contiene 
                             el diccionario
           * @return Un traductor del idioma origen al idioma destino
           * 
@@ -218,6 +209,20 @@ class Translator {
 
         /**
           *
+          * @brief Construye, dado un traductor A -> B y otro C -> B, la 
+          *         intersección de ambos, i.e., un traductor (A^C) -> B que
+          *         contiene aquellas palabras iguales en A y C que comparten 
+          *         alguna traducción en B.
+          * @param first instacia de Translator que representa al traductor A -> B
+          * @param second instacia de Translator que representa al traductor C -> B
+          * @return Un traductor (A^C) -> B
+          *
+          */
+
+        static Translator intersection(const Translator &first, const Translator &second);
+
+        /**
+          *
           * @brief Añade una palabra al traductor
           * @param word instancia de la clase Word a añadir
           *
@@ -236,6 +241,23 @@ class Translator {
           */
 
         set <string> translate(string word) const;
+
+        /**
+          *
+          * @brief Comprueba si existen traducciones para una palabra en el traductor
+          *
+          */
+
+        bool contains(string origin) const;
+
+        /**
+          *
+          * @brief Comprueba si el traductor está vacío
+          * @return true si está vacío, falso si no
+          *
+          */
+
+        bool empty() const;
 
         /**
           *
@@ -271,5 +293,11 @@ class Translator {
         static Word buildWord(string entry);
 
 };
+
+
+void GetTraductorInverso(const Translator &direct, const Translator &reverse);
+
+
+void ImprimeTraductor(const Translator &translator, ostream &os);
 
 #endif
