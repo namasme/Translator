@@ -25,6 +25,26 @@ Translator::Translator(const multimap <string, string> &dictionary){
 }
 
 
+Translator::iterator Translator::begin(){
+
+    Translator::iterator it;
+    it.it = this->dictionary.begin();
+
+    return it;
+
+}
+
+
+Translator::iterator Translator::end(){
+
+    iterator it;
+    it.it = this->dictionary.end();
+
+    return it;
+
+}
+
+
 Translator Translator::reverse(const Translator &direct){
 
     multimap <string, string>::iterator it;
@@ -157,7 +177,8 @@ void Translator::addEntry(const Word &word){
 
     string origin = word.getOrigin();
     pair <string, string> curr_entry(origin, "");
-    Word::iterator it = word.begin(), end = word.end();
+    Word::const_iterator it = word.begin();
+    Word::const_iterator end = word.end();
 
     for(; it != end; ++it){
 

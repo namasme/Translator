@@ -23,6 +23,46 @@ Word::Word(string origin, set <string> translations){
 }
 
 
+Word::iterator Word::begin(){
+
+    Word::iterator it;
+    it.it = this->translations.begin();
+
+    return it;
+
+}
+
+
+Word::iterator Word::end(){
+
+    Word::iterator it;
+    it.it = this->translations.end();
+
+    return it;
+
+}
+
+
+Word::const_iterator Word::begin() const {
+
+    Word::const_iterator it;
+    it.it = this->translations.begin();
+
+    return it;
+
+}
+
+
+Word::const_iterator Word::end() const {
+
+    Word::const_iterator it;
+    it.it = this->translations.end();
+
+    return it;
+
+}
+
+
 string Word::getOrigin() const {
 
     return this->origin;

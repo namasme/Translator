@@ -9,7 +9,6 @@
 #ifndef WORD_H
 #define WORD_H
 
-#include <vector>
 #include <string>
 #include <set>
 
@@ -112,6 +111,13 @@ class Word {
 
             public:
 
+                const_iterator(){
+
+                    set <string>::const_iterator it;
+                    this->it = it;                    
+
+                }
+
                 const_iterator(const iterator &it){
 
                     this->it = it.it;
@@ -152,13 +158,13 @@ class Word {
                     return *(this->it);
                 }
 
-                bool operator==(const iterator &it) const {
+                bool operator==(const const_iterator &it) const {
 
                     return this->it == it.it;
 
                 }
 
-                bool operator!=(const iterator &it) const {
+                bool operator!=(const const_iterator &it) const {
 
                     return this->it != it.it;
 
@@ -190,6 +196,42 @@ class Word {
 
         /**
           *
+          * @brief Devuelve un iterador a la posición inicial del set de traducciones
+          * @return Ese iterador
+          *
+          */
+
+        iterator begin();
+
+        /**
+          *
+          * @brief Devuelve un iterador a la posición final del set de traducciones
+          * @return Ese iterador
+          *
+          */
+
+        iterator end();
+
+        /**
+          *
+          * @brief Devuelve un iterador constante a la posición inicial del set de traducciones
+          * @return Ese iterador
+          *
+          */
+
+        const_iterator begin() const;
+
+        /**
+          *
+          * @brief Devuelve un iterador constante a la posición final del set de traducciones
+          * @return Ese iterador
+          *
+          */
+
+        const_iterator end() const;
+
+        /**
+          *
           * @brief Getter de origin
           * @return La palabra en el idioma origen
           *
@@ -205,40 +247,6 @@ class Word {
           */
 
         set <string> getTranslations() const;
-
-        /**
-          *
-          * @brief Devuelve un iterador no constante
-          *         a la primera traducción de la palabra
-          *
-          */
-
-        iterator begin() const {
-
-            iterator it;
-
-            it.it = this->translations.begin();
-
-            return it;
-
-        }
-
-        /**
-          *
-          * @brief Devuelve un iterador no constante
-          *         a la última traducción de la palabra
-          *
-          */
-
-        iterator end() const {
-
-            iterator it;
-
-            it.it = this->translations.end();
-
-            return it;
-
-        }
 
         /**
           *

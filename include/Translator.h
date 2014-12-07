@@ -110,6 +110,13 @@ class Translator {
 
             public:
 
+                const_iterator(){
+
+                    multimap <string, string>::const_iterator it;
+                    this->it = it;
+
+                }
+
                 const_iterator(const iterator &it){
 
                     this->it = it.it;
@@ -184,6 +191,42 @@ class Translator {
           */
 
         Translator(const multimap <string, string> &dictionary);
+
+        /**
+          *
+          * @brief Devuelve un iterador a la posición inicial del diccionario
+          * @return Ese iterador
+          *
+          */
+
+        iterator begin();
+
+        /**
+          *
+          * @brief Devuelve un iterador a la posición final del diccionario
+          * @return Ese iterador
+          *
+          */
+
+        iterator end();
+
+        /**
+          *
+          * @brief Devuelve un iterador constante a la posición inicial del diccionario
+          * @return Ese iterador
+          *
+          */
+
+        const_iterator begin() const;
+
+        /**
+          *
+          * @brief Devuelve un iterador constante a la posición final del diccionario
+          * @return Ese iterador
+          *
+          */
+
+        const_iterator end() const;          
 
         /**
           *
